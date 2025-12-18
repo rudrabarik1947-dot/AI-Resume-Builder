@@ -1,28 +1,21 @@
 import React from 'react'
 import { Button } from '../ui/button'
 import { Link } from 'react-router-dom'
-// import { UserButton, useUser } from '@clerk/clerk-react'
 
 function Header() {
-    // const { user, isSignedIn } = useUser();
-    const isSignedIn = false; // Temporary for demo
+    // For now, since Clerk key is not set, use basic header
+    // When you set VITE_CLERK_PUBLISHABLE_KEY, uncomment the Clerk code below
+    
+    // const { user, isSignedIn } = useUser(); // from @clerk/clerk-react
+    
     return (
         <div className='p-3 px-5 flex justify-between shadow-md'>
              <Link to={'/dashboard'}>
             <img src='/logo.svg' className='cursor-pointer' width={100} height={100} />
             </Link>
-            {isSignedIn ?
-                <div className='flex gap-2 items-center'>
-                    <Link to={'/dashboard'}>
-                        <Button variant="outline">Dashboard</Button>
-                    </Link>
-                    {/* <UserButton /> */}
-                </div> :
-                <Link to={'/dashboard'}>
-                    <Button>Get Started</Button>
-                </Link>
-            }
-
+            <Link to={'/dashboard'}>
+                <Button>Get Started</Button>
+            </Link>
         </div>
     )
 }
