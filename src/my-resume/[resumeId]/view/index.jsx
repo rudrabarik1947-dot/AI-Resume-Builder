@@ -5,7 +5,6 @@ import ResumePreview from '@/dashboard/resume/components/ResumePreview'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import GlobalApi from './../../../../service/GlobalApi'
-import { RWebShare } from 'react-web-share'
 import dummy from '@/data/dummy'
 
 function ViewResume() {
@@ -30,6 +29,25 @@ function ViewResume() {
         window.print();
     }
 
+    const HandleShare=()=>{
+        const url = import.meta.env.VITE_BASE_URL+"/my-resume/"+resumeId+"/view";
+        const title = resumeInfo?.firstName+" "+resumeInfo?.lastName+" resume";
+        if (navigator.share) {
+            navigator.share({
+                title: title,
+                text: "Hello Everyone, This is my resume please open url to see it",
+                url: url,
+            }).then(() => {
+                console.log("shared successfully!");
+            }).catch(console.error);
+        } else {
+            // Fallback: copy to clipboard or open a share dialog
+            navigator.clipboard.writeText(url).then(() => {
+                alert("Link copied to clipboard!");
+            }).catch(console.error);
+        }
+    }
+
   return (
     <ResumeInfoContext.Provider value={{resumeInfo,setResumeInfo}} >
         <div id="no-print">
@@ -43,15 +61,7 @@ function ViewResume() {
             <div className='flex justify-between px-44 my-10'>
                 <Button onClick={HandleDownload}>Download</Button>
                
-                <RWebShare
-        data={{
-          text: "Hello Everyone, This is my resume please open url to see it",
-          url: import.meta.env.VITE_BASE_URL+"/my-resume/"+resumeId+"/view",
-          title: resumeInfo?.firstName+" "+resumeInfo?.lastName+" resume",
-        }}
-        onClick={() => console.log("shared successfully!")}
-      > <Button>Share</Button>
-      </RWebShare>
+                <Button onClick={HandleShare}>Share</Button>
             </div>
         </div>
             
